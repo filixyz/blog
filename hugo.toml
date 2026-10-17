@@ -2,7 +2,7 @@
 # Site config. Change baseURL to your real address once deployed
 # (Cloudflare Pages gives you https://<project>.pages.dev/).
 # ------------------------------------------------------------------
-baseURL = "https://example.pages.dev/"
+baseURL = "https://felixcorpus.pages.dev/"
 locale = "en"
 title = "felix corpus"        # shown top-left and in the footer — change freely
 enableRobotsTXT = true
