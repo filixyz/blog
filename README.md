@@ -70,4 +70,4 @@ Every `git push` redeploys.
 
 - Layout and palette: [Indice](https://wordpress.com/theme/indice) by Automattic, GPL-2.0-or-later.
 - Font: [IBM Plex Mono](https://github.com/IBM/plex), SIL Open Font License 1.1 (files in `static/fonts/`).
-# blog
+

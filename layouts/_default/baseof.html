@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale | default "en" }}" data-theme="dark">
+<head>
+{{ partial "head.html" . }}
+</head>
+<body>
+<a class="skip-link" href="#content">Skip to content</a>
+{{ partial "theme-toggle.html" . }}
+<div class="site">
+  <div class="layout">
+    <aside class="sidebar">
+{{ partial "sidebar.html" . }}
+    </aside>
+    <main class="main" id="content">
+{{ block "main" . }}{{ end }}
+    </main>
+  </div>
+{{ partial "footer.html" . }}
+</div>
+{{ partial "lightbox.html" . }}
+</body>
+</html>

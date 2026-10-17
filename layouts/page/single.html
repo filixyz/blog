@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article class="entry" style="margin-bottom:0">
+  <h1 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+  {{ partial "media.html" (dict "page" . "cover" true "link" false) }}
+  <div class="entry-body">
+    {{ .Content }}
+  </div>
+</article>
+<div style="height:5rem" aria-hidden="true"></div>
+{{ end }}

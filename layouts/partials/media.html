@@ -1,0 +1,23 @@
+{{- /* Cover image + audio player for a page. Call with: partial "media.html" (dict "page" . "cover" true "link" false) */ -}}
+{{- $page := .page -}}
+{{- if and .cover (not $page.Params.hide_cover) -}}
+  {{- with $page.Resources.GetMatch "cover*" -}}
+    {{- $alt := or $page.Params.cover_alt $page.Title -}}
+    {{- if and (not $.link) (in (slice "articles" "paintings") $page.Type) -}}
+      {{- /* entry's own page in Articles / Paintings: whole image, click to enlarge */ -}}
+      {{ partial "fitfig.html" (dict "res" . "alt" $alt) }}
+    {{- else -}}
+      {{- $img := .Resize "1200x" -}}
+      <figure class="entry-cover">
+        {{- if $.link }}<a href="{{ $page.RelPermalink }}">{{ end -}}
+        <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $alt }}" loading="lazy">
+        {{- if $.link }}</a>{{ end -}}
+      </figure>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $page.Params.audio -}}
+  {{- $src := . -}}
+  {{- with $page.Resources.GetMatch . }}{{ $src = .RelPermalink }}{{ end -}}
+  <audio controls preload="none" src="{{ $src }}">Your browser does not support audio playback. <a href="{{ $src }}">Download the file</a>.</audio>
+{{- end -}}

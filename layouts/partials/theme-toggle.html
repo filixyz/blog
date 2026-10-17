@@ -1,0 +1,20 @@
+<button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch to light mode" aria-pressed="false"><span data-m="light">light</span>/<span data-m="dark">dark</span></button>
+<script>
+(function () {
+  var b = document.getElementById("theme-toggle"), r = document.documentElement;
+  function apply(t) {
+    r.setAttribute("data-theme", t);
+    b.setAttribute("aria-label", "Switch to " + (t === "light" ? "dark" : "light") + " mode");
+    b.setAttribute("aria-pressed", t === "light");
+    b.querySelectorAll("span").forEach(function (s) { s.className = s.getAttribute("data-m") === t ? "on" : ""; });
+    var m = document.querySelector("meta[name=theme-color]");
+    if (m) m.setAttribute("content", t === "light" ? "#ffffff" : "#000000");
+  }
+  apply(r.getAttribute("data-theme") === "light" ? "light" : "dark");
+  b.addEventListener("click", function () {
+    var t = r.getAttribute("data-theme") === "light" ? "dark" : "light";
+    apply(t);
+    try { localStorage.setItem("theme", t); } catch (e) {}
+  });
+})();
+</script>

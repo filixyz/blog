@@ -1,0 +1,20 @@
+{{- /* One "fitted" image: whole picture visible, click opens the lightbox.
+       Call with: partial "fitfig.html" (dict "res" <resource or nil> "src" <fallback url> "alt" "…" "caption" "…") */ -}}
+{{- $res := .res -}}
+{{- $alt := .alt | default "" -}}
+<figure class="fit">
+{{- if $res }}
+  {{- $show := $res }}
+  {{- if in (slice "image/jpeg" "image/png" "image/webp") $res.MediaType.Type }}
+    {{- /* downscale big originals for the page; never upscale small ones */ -}}
+    {{- $w := int (math.Min (float $res.Width) 1600) -}}
+    {{- $show = $res.Resize (printf "%dx q85" $w) }}
+  {{- end }}
+  <a class="zoom" href="{{ $res.RelPermalink }}"><img src="{{ $show.RelPermalink }}" width="{{ $show.Width }}" height="{{ $show.Height }}" alt="{{ $alt }}" loading="lazy" decoding="async"></a>
+{{- else }}
+  <img src="{{ .src }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+{{- end }}
+{{- with .caption }}
+  <figcaption>{{ . }}</figcaption>
+{{- end }}
+</figure>

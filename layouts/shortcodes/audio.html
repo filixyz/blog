@@ -1,0 +1,4 @@
+{{- /* {{< audio src="demo.mp3" >}} — file in the page bundle, a /static path, or a full URL (e.g. Cloudflare R2). */ -}}
+{{- $src := .Get "src" | default (.Get 0) -}}
+{{- with .Page.Resources.GetMatch $src }}{{ $src = .RelPermalink }}{{ end -}}
+<audio controls preload="none" src="{{ $src }}">Your browser does not support audio playback. <a href="{{ $src }}">Download the file</a>.</audio>

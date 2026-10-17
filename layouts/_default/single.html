@@ -1,0 +1,24 @@
+{{ define "main" }}
+<article class="entry entry--{{ .Type }}{{ if .Params.verse }} entry--verse{{ end }}" style="margin-bottom:0">
+  <h1 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+  {{ partial "media.html" (dict "page" . "cover" true "link" false) }}
+  <div class="entry-body">
+    {{ .Content }}
+  </div>
+  <div class="meta">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+    {{- range .GetTerms "tags" }}
+    <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+    {{- end }}
+  </div>
+  {{- with .Parent }}{{ if not .IsHome }}
+  <p class="back"><a href="{{ .RelPermalink }}">&larr; back to {{ lower .LinkTitle }}</a></p>
+  {{- end }}{{ end }}
+  <nav class="pager" aria-label="More in {{ .Section }}">
+    {{- with .NextInSection }}<a href="{{ .RelPermalink }}" rel="prev">&larr; {{ .Title }}</a>{{ end }}
+    <span class="spacer"></span>
+    {{- with .PrevInSection }}<a href="{{ .RelPermalink }}" rel="next">{{ .Title }} &rarr;</a>{{ end }}
+  </nav>
+</article>
+<div style="height:5rem" aria-hidden="true"></div>
+{{ end }}

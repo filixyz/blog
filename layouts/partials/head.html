@@ -1,0 +1,13 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{- /* Runs before the stylesheet so the saved theme is applied with no flash. Default is dark. */}}
+<script>try{var t=localStorage.getItem("theme");document.documentElement.setAttribute("data-theme",t==="light"?"light":"dark")}catch(e){}document.documentElement.classList.add("js")</script>
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="{{ .Permalink }}">
+<link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
+{{ with .OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">{{ end }}
+<link rel="preload" href="{{ "fonts/ibm-plex-mono_normal_300.ttf" | relURL }}" as="font" type="font/ttf" crossorigin>
+{{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">

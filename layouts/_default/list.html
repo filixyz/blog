@@ -1,0 +1,34 @@
+{{ define "main" }}
+{{ if or (eq .Kind "term") (eq .Kind "taxonomy") }}<h1 class="list-title">{{ if eq .Kind "term" }}tag: {{ end }}{{ lower .Title }}</h1>{{ else }}<h1 class="sr-only">{{ .Title }}</h1>{{ end }}
+{{ with .Content }}<div class="entry-body list-intro">{{ . }}</div>{{ end }}
+{{- if eq .Kind "taxonomy" }}
+<ul class="terms">
+  {{- range .Pages }}
+  <li><a href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a> <span class="count">{{ len .Pages }}</span></li>
+  {{- end }}
+</ul>
+{{- else }}
+  {{- /* A section with sub-sections (e.g. Writings → Poems, Lyrics, Muses) links to them, then lists everything inside. */ -}}
+  {{- if .IsSection }}{{ with .Sections }}
+<p class="subnav">
+  {{- range $i, $s := . }}{{ if $i }} <span class="sep" aria-hidden="true">·</span> {{ end }}<a href="{{ $s.RelPermalink }}">{{ lower $s.LinkTitle }}</a>{{ end -}}
+</p>
+  {{- end }}{{ end }}
+  {{- $pages := .Pages }}
+  {{- if .IsSection }}{{ $pages = .RegularPagesRecursive }}{{ end }}
+  {{- if eq (.Params.display | default "") "grid" }}
+{{ partial "grid.html" $pages }}
+  {{- else }}
+    {{- $pager := .Paginate $pages -}}
+    {{- range $pager.Pages }}
+{{ partial "entry.html" . }}
+    {{- else }}
+<p>Nothing here yet.</p>
+    {{- end }}
+{{ partial "pagination.html" . }}
+  {{- end }}
+{{- end }}
+{{- with .Parent }}{{ if and (not .IsHome) (not $.IsHome) }}
+<p class="back"><a href="{{ .RelPermalink }}">&larr; back to {{ lower .LinkTitle }}</a></p>
+{{- end }}{{ end }}
+{{ end }}

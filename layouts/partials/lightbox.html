@@ -1,0 +1,19 @@
+{{- /* Click-to-enlarge pop-up for any <a class="zoom">. Without JS the link simply opens the full image. */ -}}
+<script>
+(function () {
+  if (!window.HTMLDialogElement) return;
+  var d = document.createElement("dialog"), i = document.createElement("img");
+  d.className = "lightbox"; d.setAttribute("aria-label", "Image viewer"); d.appendChild(i);
+  document.body.appendChild(d);
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("a.zoom");
+    if (!a || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    var t = a.querySelector("img");
+    i.alt = t ? t.alt : ""; i.src = a.href;
+    d.showModal();
+  });
+  d.addEventListener("click", function () { d.close(); });      // click anywhere (or Esc) to close
+  d.addEventListener("close", function () { i.removeAttribute("src"); });
+})();
+</script>

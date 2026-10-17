@@ -1,0 +1,6 @@
+{{- /* Opt-in fitted, click-to-enlarge image anywhere (e.g. in Writings):
+       {{< fit src="sketch.jpg" caption="Optional caption" >}}   — file sits next to the entry's index.md */ -}}
+{{- $src := .Get "src" | default (.Get 0) -}}
+{{- $caption := .Get "caption" | default "" -}}
+{{- $alt := .Get "alt" | default $caption -}}
+{{- partial "fitfig.html" (dict "res" (.Page.Resources.GetMatch $src) "src" $src "alt" $alt "caption" $caption) -}}

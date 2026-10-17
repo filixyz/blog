@@ -1,0 +1,75 @@
+# ------------------------------------------------------------------
+# Site config. Change baseURL to your real address once deployed
+# (Cloudflare Pages gives you https://<project>.pages.dev/).
+# ------------------------------------------------------------------
+baseURL = "https://example.pages.dev/"
+locale = "en"
+title = "felix corpus"        # shown top-left and in the footer — change freely
+enableRobotsTXT = true
+# Only auto-summarise when you place <!--more--> yourself (see README).
+summaryLength = 100000
+
+[pagination]
+  pagerSize = 10
+
+[taxonomies]
+  tag = "tags"
+
+[params]
+  description = "Writings, paintings, demos, projects and articles."
+  tagline = "Felix Ikechukwu Okoronkwo Portfolio Blog"
+  # Optional outside link under the tagline. Delete the block to hide it.
+  # [params.external]
+  #   name = "Bandcamp"
+  #   url  = "https://example.com"
+
+[markup.goldmark.parser]
+  wrapStandAloneImageWithinParagraph = false   # lets image hooks output <figure> without a stray <p>
+
+[markup.goldmark.renderer]
+  unsafe = true                 # allow raw HTML (audio tags, line breaks) in Markdown
+
+[markup.highlight]
+  noClasses = false             # no colour theme: code stays black & white
+
+[imaging]
+  resampleFilter = "Lanczos"
+  [imaging.jpeg]
+    quality = 85
+
+[outputs]
+  home = ["HTML", "RSS"]
+
+# ---- Sidebar navigation (order = weight) --------------------------
+[[menus.main]]
+  name = "Home"
+  url = "/"
+  weight = 10
+[[menus.main]]
+  name = "Articles"
+  pageRef = "/articles"
+  weight = 40
+[[menus.main]]
+  name = "Writings"
+  pageRef = "/writings"
+  weight = 50
+[[menus.main]]
+  name = "Paintings"
+  pageRef = "/paintings"
+  weight = 60
+[[menus.main]]
+  name = "Songs"
+  pageRef = "/demos"
+  weight = 70
+[[menus.main]]
+  name = "Juvenilia"
+  pageRef = "/juvenilia"
+  weight = 80
+[[menus.main]]
+  name = "Systems"
+  pageRef = "/projects"
+  weight = 30
+[[menus.main]]
+  name = "Resume"
+  pageRef = "/resume"
+  weight = 20

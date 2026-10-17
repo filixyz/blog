@@ -1,0 +1,13 @@
+{{- $current := . -}}
+      <a class="site-title" href="{{ "/" | relURL }}">{{ site.Title }}</a>
+      <nav class="nav" aria-label="Main">
+{{- range site.Menus.main }}
+  {{- /* Home is an ancestor of every page, so it only counts when you are actually on it. */}}
+  {{- $isHome := eq .URL "/" }}
+  {{- $active := false }}
+  {{- if $isHome }}{{ $active = $current.IsHome }}{{ else }}{{ $active = or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) ($current.IsDescendant .Page) }}{{ end }}
+        <a href="{{ if $isHome }}{{ "/" | relURL }}{{ else }}{{ .URL }}{{ end }}"{{ if $active }} aria-current="page"{{ end }}>{{ .Name }}</a>
+{{- end }}
+      </nav>
+      {{ with site.Params.tagline }}<p class="tagline">{{ . }}</p>{{ end }}
+      {{ with site.Params.external }}<p><a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ .name }} &nearr;</a></p>{{ end }}
