@@ -26,13 +26,13 @@ summaryLength = 100000
 
   # Banner image: a file in static/, 1600x400 (4:1). Sits under the site name on desktop, under the top bar on phones,
   # running to the screen edge (left on desktop, both sides on phones). Set to "" to hide it.
-  header = "header.jpg"
+  header = "header.png"
 
   # Text typeface: "inter" (default), "wikipedia" (system sans body + serif titles), "mono" (IBM Plex Mono),
   # or "typewriter" (American Typewriter on Macs/iPhones, bundled Arvo slab elsewhere).
   font = "inter"
-  description = "Projects, writings, documents, paintings, songs and more."
-  tagline = "writing, art, music and code."
+  description = "personal blog"
+  tagline = "felix ikechukwu okoronkwo personal blog"
   # Optional outside link under the tagline. Delete the block to hide it.
   # [params.external]
   #   name = "Bandcamp"
