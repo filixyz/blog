@@ -1,7 +1,7 @@
 ---
 title: "sample article: how a handshake works"
 date: 2026-10-13
-draft: true
+draft: false
 tags: ["sample", "networking"]
 ---
 
