@@ -6,7 +6,8 @@
     {{ .Content }}
   </div>
   <div class="meta">
-    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+    {{- with .Parent }}{{ if not .IsHome }}<a href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a>{{ end }}{{ end }}
     {{- range .GetTerms "tags" }}
     <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
     {{- end }}
@@ -14,10 +15,11 @@
   {{- with .Parent }}{{ if not .IsHome }}
   <p class="back"><a href="{{ .RelPermalink }}">&larr; back to {{ lower .LinkTitle }}</a></p>
   {{- end }}{{ end }}
-  <nav class="pager" aria-label="More in {{ .Section }}">
-    {{- with .NextInSection }}<a href="{{ .RelPermalink }}" rel="prev">&larr; {{ .Title }}</a>{{ end }}
+  {{- $sibs := .Parent.RegularPages }}
+  <nav class="pager" aria-label="More in {{ .Parent.LinkTitle }}">
+    {{- with $sibs.Next . }}<a href="{{ .RelPermalink }}" rel="prev">&larr; {{ .Title }}</a>{{ end }}
     <span class="spacer"></span>
-    {{- with .PrevInSection }}<a href="{{ .RelPermalink }}" rel="next">{{ .Title }} &rarr;</a>{{ end }}
+    {{- with $sibs.Prev . }}<a href="{{ .RelPermalink }}" rel="next">{{ .Title }} &rarr;</a>{{ end }}
   </nav>
 </article>
 <div style="height:5rem" aria-hidden="true"></div>

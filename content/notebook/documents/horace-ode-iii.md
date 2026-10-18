@@ -1,0 +1,10 @@
+---
+title: "Horace, Ode III"
+date: 2023-02-10
+---
+
+Quintus Horatius Flaccus, known in the English-speaking world as Horace (/ˈhɒrɪs/), was the leading [Roman](https://en.wikipedia.org/wiki/Ancient_Rome) [lyric poet](https://en.wikipedia.org/wiki/Lyric_poetry) during the time of [Augustus](https://en.wikipedia.org/wiki/Augustus) (also known as Octavian). The rhetorician [Quintilian](https://en.wikipedia.org/wiki/Quintilian) regarded his *[Odes](https://en.wikipedia.org/wiki/Odes_(Horace))* as just about the only Latin lyrics worth reading: “He can be lofty sometimes, yet he is also full of charm and grace, versatile in his figures, and felicitously daring in his choice of words.”
+
+Horace also crafted elegant [hexameter verses](https://en.wikipedia.org/wiki/Dactylic_hexameter) (*[Satires](https://en.wikipedia.org/wiki/Satires_(Horace))* and *[Epistles](https://en.wikipedia.org/wiki/Epistles_(Horace))*) and caustic [iambic poetry](https://en.wikipedia.org/wiki/Iambic_pentameter) (*[Epodes](https://en.wikipedia.org/wiki/Epodes_(Horace))*). The hexameters are amusing yet serious works, friendly in tone, leading the ancient satirist [Persius](https://en.wikipedia.org/wiki/Persius) to comment: “as his friend laughs, Horace slyly puts his finger on his every fault; once let in, he plays about the heartstrings”.<sup>[[nb 2]](#)</sup>
+
+His career coincided with Rome’s momentous change from a republic to an empire. An officer in the republican army defeated at the [Battle of Philippi](https://en.wikipedia.org/wiki/Battle_of_Philippi) in 42 BC, he was befriended by Octavian’s right-hand man in civil affairs, [Maecenas](https://en.wikipedia.org/wiki/Maecenas), and became a spokesman for the new regime. For some commentators, his association with the regime was a delicate balance in which he maintained a strong measure of independence (he was “a master of the graceful sidestep”)<sup>[[2]](#)</sup> but for others he was, in [John Dryden](https://en.wikipedia.org/wiki/John_Dryden)’s phrase, “a well-mannered court slave”.

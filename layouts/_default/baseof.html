@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="{{ site.Language.Locale | default "en" }}" data-theme="dark">
+<html data-font="{{ site.Params.font | default "inter" }}" data-syntax="{{ if or (not (isset site.Params "syntax")) site.Params.syntax }}on{{ else }}off{{ end }}" lang="{{ site.Language.Locale | default "en" }}" data-theme="dark" data-purple="{{ if site.Params.purple }}on{{ else }}off{{ end }}" data-purple-default="{{ if site.Params.purple }}on{{ else }}off{{ end }}">
 <head>
 {{ partial "head.html" . }}
 </head>
 <body>
 <a class="skip-link" href="#content">Skip to content</a>
-{{ partial "theme-toggle.html" . }}
+{{ partial "topbar.html" . }}
+{{ partial "header-image.html" (dict "cls" "hero-m") }}
 <div class="site">
   <div class="layout">
     <aside class="sidebar">
 {{ partial "sidebar.html" . }}
     </aside>
     <main class="main" id="content">
+{{ partial "breadcrumbs.html" . }}
 {{ block "main" . }}{{ end }}
     </main>
   </div>

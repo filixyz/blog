@@ -1,5 +1,5 @@
 ---
-title: "sample demo"
+title: "sample song"
 date: 2026-10-09
 tags: ["sample"]
 audio: "demo.mp3"

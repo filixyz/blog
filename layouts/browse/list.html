@@ -1,0 +1,80 @@
+{{ define "main" }}
+{{- /* Every entry except the resume, newest first, grouped by month. Month links are #YYYY-MM anchors: they work without JavaScript
+       (they jump to that month) and, with JavaScript, filter the list. */ -}}
+{{- $pages := (where site.RegularPages "Type" "ne" "page").ByDate.Reverse -}}
+{{- $groups := $pages.GroupByDate "2006-01" -}}
+<h1 class="list-title tight">browse</h1>
+<p class="back"><a href="{{ "/" | relURL }}">&larr; back to feed</a></p>
+<input class="search" type="search" id="q" placeholder="search this site…" aria-label="Search this site" autocomplete="off" spellcheck="false">
+<div class="browse">
+  <nav class="dates" aria-label="Browse by date">
+    <h2>browse by date</h2>
+    <button type="button" class="dd" aria-haspopup="listbox" aria-expanded="false"><span class="dd-label">all dates</span></button>
+    <ul>
+      <li class="alldates sel"><a href="{{ .RelPermalink }}">all dates</a></li>
+{{- range $groups }}
+      <li data-ym="{{ .Key }}"><a href="#{{ .Key }}">{{ (index .Pages 0).Date.Format "January 2006" }}</a> <span class="count">({{ len .Pages }})</span></li>
+{{- end }}
+      <li class="all" hidden><a href="{{ .RelPermalink }}">back to all dates</a></li>
+    </ul>
+  </nav>
+  <div>
+    <ol class="results">
+{{- range $groups }}{{ $key := .Key }}
+  {{- range $i, $p := .Pages }}
+      <li data-ym="{{ $key }}" data-u="{{ $p.RelPermalink }}"{{ if eq $i 0 }} id="{{ $key }}"{{ end }}><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a><span class="when">{{ $p.Date.Format "January 2, 2006" }}</span></li>
+  {{- end }}
+{{- end }}
+    </ol>
+    <p class="none" hidden>No matches.</p>
+  </div>
+</div>
+<script>
+(function () {
+  var q = document.getElementById("q"), none = document.querySelector(".none"), all = document.querySelector(".dates .all");
+  var dates = document.querySelector(".dates"), dd = dates.querySelector(".dd"), label = dd.querySelector(".dd-label"), alldates = dates.querySelector(".alldates");
+  var items = [].slice.call(document.querySelectorAll(".results li")), months = [].slice.call(dates.querySelectorAll("li[data-ym]"));
+  var mq = window.matchMedia("(max-width: 760px)");
+  var url = "{{ with .OutputFormats.Get "json" }}{{ .RelPermalink }}{{ end }}", idx = null, req = null, ym = "";
+  function load() {
+    if (!req) req = fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+      idx = {}; j.forEach(function (e) { idx[e.u] = (e.t + " " + e.c).toLowerCase(); });
+    }).catch(function () { idx = {}; });
+    return req;
+  }
+  function closeMenu() { dates.classList.remove("open"); dd.setAttribute("aria-expanded", "false"); }
+  function apply() {
+    var words = q.value.toLowerCase().split(/\s+/).filter(Boolean), shown = 0, cur = alldates;
+    items.forEach(function (li) {
+      var ok = !ym || li.getAttribute("data-ym") === ym;
+      if (ok && words.length) {
+        var hay = (idx && idx[li.getAttribute("data-u")]) || li.textContent.toLowerCase();
+        ok = words.every(function (w) { return hay.indexOf(w) > -1; });
+      }
+      li.hidden = !ok; if (ok) shown++;
+    });
+    months.forEach(function (m) {
+      var on = m.getAttribute("data-ym") === ym;
+      m.classList.toggle("sel", on); if (on) cur = m;
+      m.hidden = !mq.matches && !!ym && !on;          /* desktop: a chosen month stands alone; phones keep the whole dropdown */
+    });
+    alldates.classList.toggle("sel", !ym);
+    label.textContent = cur.textContent.trim().replace(/\s+/g, " ");
+    all.hidden = !ym; none.hidden = shown > 0;
+  }
+  function setMonth(v) { ym = v; history.replaceState(null, "", location.pathname + (v ? "#" + v : "")); apply(); closeMenu(); }
+  function fromHash() { var h = location.hash.slice(1); ym = /^\d{4}-\d{2}$/.test(h) ? h : ""; apply(); }
+  dates.addEventListener("click", function (e) {
+    var a = e.target.closest("a"); if (!a) return;
+    e.preventDefault(); setMonth(a.closest("li").getAttribute("data-ym") || "");
+  });
+  dd.addEventListener("click", function (e) { e.stopPropagation(); var o = dates.classList.toggle("open"); dd.setAttribute("aria-expanded", o); });
+  document.addEventListener("click", function (e) { if (!dates.contains(e.target)) closeMenu(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
+  q.addEventListener("input", function () { apply(); load().then(apply); });
+  window.addEventListener("hashchange", fromHash);
+  if (mq.addEventListener) mq.addEventListener("change", apply);
+  fromHash();
+})();
+</script>
+{{ end }}

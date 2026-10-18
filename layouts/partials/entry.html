@@ -10,5 +10,5 @@
     {{ .Content }}
     {{- end }}
   </div>
-  <div class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time></div>
+  <div class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>{{ with .Parent }}{{ if not .IsHome }}<a href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a>{{ end }}{{ end }}</div>
 </article>

@@ -1,0 +1,17 @@
+<header class="topbar">
+  {{ partial "site-title.html" . }}
+  <a class="browse-link" href="{{ "browse/" | relURL }}"{{ if eq .Type "browse" }} aria-current="page"{{ end }}>browse</a>
+{{ partial "theme-toggle.html" . }}
+  <button type="button" id="menu-btn" class="menu-btn" aria-expanded="false" aria-controls="content-nav">menu</button>
+</header>
+<script>
+(function () {
+  var r = document.documentElement, b = document.getElementById("menu-btn");
+  function set(on) { r.classList.toggle("menu-open", on); b.setAttribute("aria-expanded", on); }
+  document.addEventListener("click", function (e) {
+    if (e.target.closest("#menu-btn")) set(true);
+    else if (e.target.closest(".menu-close")) { set(false); b.focus(); }
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") set(false); });
+})();
+</script>

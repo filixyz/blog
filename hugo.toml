@@ -2,7 +2,7 @@
 # Site config. Change baseURL to your real address once deployed
 # (Cloudflare Pages gives you https://<project>.pages.dev/).
 # ------------------------------------------------------------------
-baseURL = "https://felixcorpus.pages.dev/"
+baseURL = "https://example.pages.dev/"
 locale = "en"
 title = "felix corpus"        # shown top-left and in the footer — change freely
 enableRobotsTXT = true
@@ -16,8 +16,23 @@ summaryLength = 100000
   tag = "tags"
 
 [params]
-  description = "Writings, paintings, demos, projects and articles."
-  tagline = "Felix Ikechukwu Okoronkwo Portfolio Blog"
+  # Text colour. false = plain (grey on near-black / black on white).
+  # true = "purple" mode (the blue/lavender lettering) for everyone who has not clicked the circle at the foot of the page.
+  purple = false
+
+  # true = code blocks are coloured by language (GitHub style). false = plain code, same colour as the text.
+  # Applies to everyone on the next deploy; there is no visitor-side switch.
+  syntax = true
+
+  # Banner image: a file in static/, 1600x400 (4:1). Sits under the site name on desktop, under the top bar on phones,
+  # running to the screen edge (left on desktop, both sides on phones). Set to "" to hide it.
+  header = "header.jpg"
+
+  # Text typeface: "inter" (default), "wikipedia" (system sans body + serif titles), "mono" (IBM Plex Mono),
+  # or "typewriter" (American Typewriter on Macs/iPhones, bundled Arvo slab elsewhere).
+  font = "inter"
+  description = "Projects, writings, documents, paintings, songs and more."
+  tagline = "writing, art, music and code."
   # Optional outside link under the tagline. Delete the block to hide it.
   # [params.external]
   #   name = "Bandcamp"
@@ -40,36 +55,46 @@ summaryLength = 100000
 [outputs]
   home = ["HTML", "RSS"]
 
-# ---- Sidebar navigation (order = weight) --------------------------
-[[menus.main]]
-  name = "Home"
-  url = "/"
-  weight = 10
-[[menus.main]]
-  name = "Articles"
-  pageRef = "/articles"
-  weight = 40
-[[menus.main]]
-  name = "Writings"
-  pageRef = "/writings"
-  weight = 50
-[[menus.main]]
-  name = "Paintings"
-  pageRef = "/paintings"
-  weight = 60
-[[menus.main]]
-  name = "Songs"
-  pageRef = "/demos"
-  weight = 70
-[[menus.main]]
-  name = "Juvenilia"
-  pageRef = "/juvenilia"
-  weight = 80
-[[menus.main]]
-  name = "Systems"
-  pageRef = "/projects"
-  weight = 30
+# ---- Sidebar navigation: a folder tree --------------------------------
+# A top-level item with children shows them underneath (open only while you are inside it).
 [[menus.main]]
   name = "Resume"
   pageRef = "/resume"
+  weight = 10
+[[menus.main]]
+  name = "Projects"
+  pageRef = "/projects"
   weight = 20
+[[menus.main]]
+  name = "Notebook"
+  pageRef = "/notebook"
+  weight = 30
+[[menus.main]]
+  name = "Documents"
+  pageRef = "/notebook/documents"
+  parent = "Notebook"
+  weight = 31
+[[menus.main]]
+  name = "Writings"
+  pageRef = "/notebook/writings"
+  parent = "Notebook"
+  weight = 32
+[[menus.main]]
+  name = "Collection"
+  pageRef = "/collection"
+  weight = 40
+[[menus.main]]
+  name = "Paintings"
+  pageRef = "/collection/paintings"
+  parent = "Collection"
+  weight = 41
+[[menus.main]]
+  name = "Songs"
+  pageRef = "/collection/songs"
+  parent = "Collection"
+  weight = 42
+[[menus.main]]
+  name = "Juvenilia"
+  pageRef = "/collection/juvenilia"
+  parent = "Collection"
+  weight = 43

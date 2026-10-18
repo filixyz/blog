@@ -1,0 +1,21 @@
+{{- /* Tiny circle in the footer. Empty circle with an X = plain text colours; filled circle = purple mode. */ -}}
+<button type="button" id="tone-toggle" class="tone-toggle" aria-pressed="false" aria-label="Purple text colour: off" title="purple text on/off">
+  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="7"/><path d="M3.05 3.05 12.95 12.95M12.95 3.05 3.05 12.95"/></svg>
+</button>
+<script>
+(function () {
+  var b = document.getElementById("tone-toggle"), r = document.documentElement;
+  function show() {
+    var on = r.getAttribute("data-purple") === "on";
+    b.setAttribute("aria-pressed", on);
+    b.setAttribute("aria-label", "Purple text colour: " + (on ? "on" : "off"));
+  }
+  show();
+  b.addEventListener("click", function () {
+    var on = r.getAttribute("data-purple") !== "on" ? "on" : "off";
+    r.setAttribute("data-purple", on);
+    try { localStorage.setItem("purple", on + "|" + r.getAttribute("data-purple-default")); } catch (e) {}
+    show();
+  });
+})();
+</script>

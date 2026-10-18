@@ -1,0 +1,2 @@
+{{- $pages := where site.RegularPages "Type" "ne" "page" -}}
+[{{ range $i, $p := $pages }}{{ if $i }},{{ end }}{{ dict "u" $p.RelPermalink "t" $p.Title "c" ($p.Plain | truncate 3000) | jsonify }}{{ end }}]

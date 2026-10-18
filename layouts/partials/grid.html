@@ -4,7 +4,7 @@
   {{- $p := . }}
   <li><a href="{{ $p.RelPermalink }}">
     {{- with $p.Resources.GetMatch "cover*" }}
-      {{- $t := .Fill "360x360 q80" }}
+      {{- $t := .Fill "720x720 q80" }}
       <img src="{{ $t.RelPermalink }}" width="{{ $t.Width }}" height="{{ $t.Height }}" alt="" loading="lazy">
     {{- else }}<span class="noimg"></span>{{ end }}
     <span>{{ $p.Title }}</span>

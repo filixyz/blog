@@ -1,0 +1,2 @@
+{{- /* Banner image from params.header (a file in static/, 1600x400). Called once for the sidebar (desktop) and once under the top bar (mobile); CSS shows the right one. */ -}}
+{{- with site.Params.header }}<img class="hero {{ $.cls }}" src="{{ . | relURL }}" width="1600" height="400" alt="" loading="lazy">{{ end -}}

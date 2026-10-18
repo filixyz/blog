@@ -1,4 +1,7 @@
   <footer class="footer">
-    <p>{{ site.Title }} –––––––––</p>
-    <p>© {{ now.Year }} · built with <a href="https://gohugo.io/">Hugo</a></p>
+    <div>
+      <p>{{ site.Title }} –––––––––</p>
+      <p>© {{ now.Year }} · built with <a href="https://gohugo.io/">Hugo</a></p>
+    </div>
+    {{ partial "tone-toggle.html" . }}
   </footer>

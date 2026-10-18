@@ -8,12 +8,6 @@
   {{- end }}
 </ul>
 {{- else }}
-  {{- /* A section with sub-sections (e.g. Writings → Poems, Lyrics, Muses) links to them, then lists everything inside. */ -}}
-  {{- if .IsSection }}{{ with .Sections }}
-<p class="subnav">
-  {{- range $i, $s := . }}{{ if $i }} <span class="sep" aria-hidden="true">·</span> {{ end }}<a href="{{ $s.RelPermalink }}">{{ lower $s.LinkTitle }}</a>{{ end -}}
-</p>
-  {{- end }}{{ end }}
   {{- $pages := .Pages }}
   {{- if .IsSection }}{{ $pages = .RegularPagesRecursive }}{{ end }}
   {{- if eq (.Params.display | default "") "grid" }}

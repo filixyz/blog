@@ -20,7 +20,7 @@ Applied networking, concurrency and systems programming.
 **BitTorrent client in C++** — from-scratch client: bencode decoder, HTTP tracker manager
 on libcurl + libev, connection manager with BEP 3 handshakes, lock-free SPSC queues between
 threads, ring-buffer socket I/O; validated under AddressSanitizer and UBSan.
-See [Projects](/projects/).
+See [Projects](/projects/bittorrent-client/).
 
 ## Experience
 
