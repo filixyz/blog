@@ -1,14 +1,2 @@
 {{- /* One item in a stream (home, section lists, tag lists). */ -}}
-<article class="entry entry--{{ .Type }}{{ if .Params.verse }} entry--verse{{ end }}">
-  <h2 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-  {{ partial "media.html" (dict "page" . "cover" true "link" true) }}
-  <div class="entry-body">
-    {{- if .Truncated }}
-    {{ .Summary }}
-    <p class="more"><a href="{{ .RelPermalink }}">continue &rarr;</a></p>
-    {{- else }}
-    {{ .Content }}
-    {{- end }}
-  </div>
-  <div class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>{{ with .Parent }}{{ if not .IsHome }}<a href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a>{{ end }}{{ end }}</div>
-</article>
+{{ partial "post.html" (dict "p" . "page" false) }}

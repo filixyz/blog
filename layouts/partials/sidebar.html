@@ -1,67 +1,16 @@
-{{- /* The folder tree. Folders (anything with children or entries) get a chevron toggle; the label itself is a plain link.
-       State is kept in the browser (see the script at the bottom). */ -}}
+{{- /* Plain top-level links. The section you are in (or the one that contains the page you are on) is underlined.
+       The whole nested tree lives on the Browse page ("tree"). */ -}}
 {{- $current := . -}}
       <button type="button" class="menu-close" aria-label="Close menu"><svg viewBox="0 0 24 12" aria-hidden="true"><path d="M23 6H2M7 1L2 6l5 5"/></svg></button>
       {{ partial "site-title.html" . }}
       {{ partial "header-image.html" (dict "cls" "hero-d") }}
-      <nav class="nav" id="content-nav" aria-label="Main" data-current="{{ .RelPermalink }}" data-entry="{{ if and .IsPage (not .IsHome) (ne .Type "page") }}true{{ else }}false{{ end }}">
+      <nav class="nav" id="content-nav" aria-label="Main">
         <ul class="tree">
 {{- range site.Menus.main }}
-  {{- template "node" (dict "e" . "cur" $current) }}
+  {{- $inside := and .Page (or (eq $current .Page) ($current.IsDescendant .Page)) }}
+          <li><a href="{{ .URL }}"{{ if and .Page (eq $current .Page) }} aria-current="page"{{ else if $inside }} aria-current="true"{{ end }}>{{ .Name }}</a></li>
 {{- end }}
         </ul>
       </nav>
       {{ with site.Params.tagline }}<p class="tagline">{{ . }}</p>{{ end }}
       {{ with site.Params.external }}<p><a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ .name }} &nearr;</a></p>{{ end }}
-      <script>
-      (function () {
-        var nav = document.querySelector(".nav"); if (!nav) return;
-        var cur = nav.getAttribute("data-current"), entry = nav.getAttribute("data-entry") === "true";
-        var KEY = "nav-open", folders = [].slice.call(nav.querySelectorAll(".folder"));
-        function set(f, on) {
-          f.classList.toggle("open", on);
-          var t = f.querySelector(":scope > .row > .toggle");
-          t.setAttribute("aria-expanded", on);
-          t.setAttribute("aria-label", (on ? "Collapse " : "Expand ") + f.querySelector(":scope > .row > a").textContent);
-        }
-        function save() {
-          var open = folders.filter(function (f) { return f.classList.contains("open"); }).map(function (f) { return f.getAttribute("data-key"); });
-          try { localStorage.setItem(KEY, JSON.stringify(open)); } catch (e) {}
-        }
-        var stored = null;
-        try { stored = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
-        /* Folders stay as the visitor left them. On a first visit straight to an entry, the folders leading to it open once. */
-        var keep = Array.isArray(stored) ? stored : (entry ? folders.map(function (f) { return f.getAttribute("data-key"); }).filter(function (k) { return cur.indexOf(k) === 0; }) : []);
-        folders.forEach(function (f) { set(f, keep.indexOf(f.getAttribute("data-key")) > -1); });
-        nav.addEventListener("click", function (e) {
-          var t = e.target.closest && e.target.closest(".toggle"); if (!t) return;
-          var f = t.closest(".folder");
-          set(f, !f.classList.contains("open")); save();
-        });
-        nav.classList.add("ready");
-      })();
-      </script>
-{{ define "node" }}
-  {{- $e := .e }}{{ $cur := .cur }}
-  {{- $inside := or (eq $cur $e.Page) ($cur.IsDescendant $e.Page) }}
-  {{- $files := slice }}
-  {{- if and $e.Page $e.Page.IsSection (not $e.HasChildren) }}{{ $files = $e.Page.RegularPagesRecursive }}{{ end }}
-  {{- if or $e.HasChildren $files }}
-          <li class="folder" data-key="{{ $e.URL }}">
-            <div class="row"><a href="{{ $e.URL }}"{{ if eq $cur $e.Page }} aria-current="page"{{ else if $inside }} aria-current="true"{{ end }}>{{ $e.Name }}</a><button type="button" class="toggle" aria-expanded="false" aria-label="Expand {{ $e.Name }}"><span aria-hidden="true"></span></button></div>
-            {{- if $e.HasChildren }}
-            <ul class="children">
-              {{- range $e.Children }}{{ template "node" (dict "e" . "cur" $cur) }}{{ end }}
-            </ul>
-            {{- else }}
-            <ul class="files">
-              {{- range $files }}
-              <li><a href="{{ .RelPermalink }}"{{ if eq $cur . }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>
-              {{- end }}
-            </ul>
-            {{- end }}
-          </li>
-  {{- else }}
-          <li><a href="{{ $e.URL }}"{{ if eq $cur $e.Page }} aria-current="page"{{ else if $inside }} aria-current="true"{{ end }}>{{ $e.Name }}</a></li>
-  {{- end }}
-{{ end }}

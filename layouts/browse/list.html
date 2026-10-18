@@ -5,6 +5,8 @@
 {{- $groups := $pages.GroupByDate "2006-01" -}}
 <h1 class="list-title tight">browse</h1>
 <p class="back"><a href="{{ "/" | relURL }}">&larr; back to feed</a></p>
+<div class="bp">
+<p class="modes" role="group" aria-label="Browse mode"><button type="button" data-m="search" aria-pressed="true">search</button><span aria-hidden="true">|</span><button type="button" data-m="tree" aria-pressed="false">tree</button></p>
 <input class="search" type="search" id="q" placeholder="search this site…" aria-label="Search this site" autocomplete="off" spellcheck="false">
 <div class="browse">
   <nav class="dates" aria-label="Browse by date">
@@ -29,7 +31,73 @@
     <p class="none" hidden>No matches.</p>
   </div>
 </div>
+<div class="treeview">
+  <ul class="tree">
+{{- range site.Menus.main }}{{ template "bnode" . }}{{ end }}
+  </ul>
+</div>
+</div>
 <script>
+(function () {
+  var bp = document.querySelector(".bp");
+  [].slice.call(document.querySelectorAll(".modes button")).forEach(function (b) {
+    b.addEventListener("click", function () {
+      var tree = b.getAttribute("data-m") === "tree";
+      bp.classList.toggle("tree-mode", tree);
+      [].slice.call(document.querySelectorAll(".modes button")).forEach(function (o) { o.setAttribute("aria-pressed", o === b); });
+    });
+  });
+  /* drill-down: the nested list above is the data; the view shows one folder at a time with a breadcrumb */
+  var tv = document.querySelector(".treeview"), src = tv.querySelector("ul.tree"), view = document.createElement("div"), path = [];
+  view.className = "drill"; tv.appendChild(view); src.hidden = true;
+  function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
+  function render() {
+    var node = path.length ? path[path.length - 1] : null, list = node ? node.querySelector(":scope > ul.sub") : src;
+    view.innerHTML = "";
+    var crumbs = el("p", "dcrumbs"), root = el("button", "dlink", "tree");
+    root.type = "button"; root.onclick = function () { path = []; render(); };
+    if (!path.length) { root = el("span", "cur", "tree"); }
+    crumbs.appendChild(root);
+    path.forEach(function (f, i) {
+      crumbs.appendChild(el("span", "sep", "/"));
+      var name = f.querySelector(":scope > a").textContent;
+      if (i === path.length - 1) crumbs.appendChild(el("span", "cur", name));
+      else { var b = el("button", "dlink", name); b.type = "button"; b.onclick = function () { path = path.slice(0, i + 1); render(); }; crumbs.appendChild(b); }
+    });
+    view.appendChild(crumbs);
+    if (node) {
+      var up = el("p", "dup"), ub = el("button", "dlink", "\u2190 parent"); ub.type = "button";
+      ub.onclick = function () { path.pop(); render(); }; up.appendChild(ub);
+      var open = el("a", "dopen", "open page"); open.href = node.querySelector(":scope > a").href; up.appendChild(open);
+      view.appendChild(up);
+    }
+    var ul = el("ul", "dlist");
+    function enter(chain) { path = path.concat(chain); render(); window.scrollTo(0, 0); }
+    [].slice.call(list.children).forEach(function (li) {
+      var a = li.querySelector(":scope > a"), row = el("li");
+      if (li.classList.contains("folder")) {
+        var head = el("div", "dhead"), b = el("button", "dfolder"); b.type = "button"; b.appendChild(el("span", null, a.textContent));
+        b.onclick = function () { enter([li]); };
+        var t = el("button", "dtog"); t.type = "button"; t.setAttribute("aria-expanded", "false"); t.setAttribute("aria-label", "Show what is in " + a.textContent);
+        t.appendChild(el("span"));
+        var peek = el("ul", "dpeek"); peek.hidden = true;
+        [].slice.call(li.querySelector(":scope > ul.sub").children).forEach(function (c) {
+          var ca = c.querySelector(":scope > a"), pr = el("li");
+          if (c.classList.contains("folder")) {
+            var cb = el("button", "dfolder"); cb.type = "button"; cb.appendChild(el("span", null, ca.textContent));
+            cb.onclick = function () { enter([li, c]); }; pr.appendChild(cb);
+          } else { var l = el("a", null, ca.textContent); l.href = ca.href; pr.appendChild(l); }
+          peek.appendChild(pr);
+        });
+        t.onclick = function () { var on = peek.hidden; peek.hidden = !on; t.setAttribute("aria-expanded", on); };   /* in place; only a click on the folder name changes the root */
+        head.appendChild(b); head.appendChild(t); row.appendChild(head); row.appendChild(peek);
+      } else { var l = el("a", null, a.textContent); l.href = a.href; row.appendChild(l); }
+      ul.appendChild(row);
+    });
+    view.appendChild(ul);
+  }
+  render();
+})();
 (function () {
   var q = document.getElementById("q"), none = document.querySelector(".none"), all = document.querySelector(".dates .all");
   var dates = document.querySelector(".dates"), dd = dates.querySelector(".dd"), label = dd.querySelector(".dd-label"), alldates = dates.querySelector(".alldates");
@@ -77,4 +145,19 @@
   fromHash();
 })();
 </script>
+{{ end }}
+
+{{ define "bnode" }}
+  {{- $files := slice }}
+  {{- if and .Page .Page.IsSection }}{{ if .HasChildren }}{{ $files = .Page.RegularPages }}{{ else }}{{ $files = .Page.RegularPagesRecursive }}{{ end }}{{ end }}
+  {{- if or .HasChildren $files }}
+    <li class="folder"><a href="{{ .URL }}">{{ .Name }}</a>
+      <ul class="sub">
+        {{- range .Children }}{{ template "bnode" . }}{{ end }}
+        {{- range $files }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}
+      </ul>
+    </li>
+  {{- else }}
+    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+  {{- end }}
 {{ end }}

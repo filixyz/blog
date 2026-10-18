@@ -1,26 +1,12 @@
 {{ define "main" }}
-<article class="entry entry--{{ .Type }}{{ if .Params.verse }} entry--verse{{ end }}" style="margin-bottom:0">
-  <h1 class="entry-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
-  {{ partial "media.html" (dict "page" . "cover" true "link" false) }}
-  <div class="entry-body">
-    {{ .Content }}
-  </div>
-  <div class="meta">
-    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
-    {{- with .Parent }}{{ if not .IsHome }}<a href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a>{{ end }}{{ end }}
-    {{- range .GetTerms "tags" }}
-    <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-    {{- end }}
-  </div>
-  {{- with .Parent }}{{ if not .IsHome }}
-  <p class="back"><a href="{{ .RelPermalink }}">&larr; back to {{ lower .LinkTitle }}</a></p>
-  {{- end }}{{ end }}
-  {{- $sibs := .Parent.RegularPages }}
-  <nav class="pager" aria-label="More in {{ .Parent.LinkTitle }}">
-    {{- with $sibs.Next . }}<a href="{{ .RelPermalink }}" rel="prev">&larr; {{ .Title }}</a>{{ end }}
-    <span class="spacer"></span>
-    {{- with $sibs.Prev . }}<a href="{{ .RelPermalink }}" rel="next">{{ .Title }} &rarr;</a>{{ end }}
-  </nav>
-</article>
+{{ partial "post.html" (dict "p" . "page" true) }}
+{{- with .Parent }}{{ if not .IsHome }}
+<p class="back"><a href="{{ .RelPermalink }}">&larr; back to {{ lower .LinkTitle }}</a></p>
+{{- end }}{{ end }}
+{{- $sibs := .Parent.RegularPages }}
+<nav class="pager" aria-label="More in {{ .Parent.LinkTitle }}">
+  <span class="prev">{{ with $sibs.Next . }}<a href="{{ .RelPermalink }}" rel="prev">&larr; {{ .Title }}</a>{{ end }}</span>
+  <span class="next">{{ with $sibs.Prev . }}<a href="{{ .RelPermalink }}" rel="next">{{ .Title }} &rarr;</a>{{ end }}</span>
+</nav>
 <div style="height:5rem" aria-hidden="true"></div>
 {{ end }}

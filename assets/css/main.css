@@ -43,6 +43,7 @@
   --neutral: #a9afab;       /* the circle at the foot of the page uses this when purple mode is off */
   --primary: #a9afab;
   --secondary: #666a67;
+  --folder: #6f9fe0;        /* folders in the Browse tree */
   color-scheme: dark;
 }
 :root[data-theme="light"] {
@@ -50,6 +51,7 @@
   --neutral: #000;
   --primary: #000;
   --secondary: rgba(0, 0, 0, 0.56);
+  --folder: #1d56b8;
   color-scheme: light;
 }
 /* ---- purple mode: the circle at the foot of the page, or `purple = true` in hugo.toml ----
@@ -104,33 +106,12 @@ a:focus-visible, audio:focus-visible, summary:focus-visible { outline: 1px dashe
 .hero { display: block; height: auto; aspect-ratio: 4 / 1; object-fit: cover; }
 .hero-d { margin: 0 1rem 1.75rem calc(-1 * var(--pad)); width: calc(100% + var(--pad) - 1rem); max-width: none; }   /* bleeds off the left screen edge; roomy gutter before the blog text */
 .hero-m { display: none; }
+picture { display: contents; }
 
-/* the folder tree: label = link, chevron = toggle */
+/* sidebar: plain section links. (The folder tree with chevrons lives on the Browse page.) */
 .nav { margin-bottom: 2rem; }
 .tree, .children, .files { list-style: none; margin: 0; padding: 0; }
-.tree > li, .children > li { margin: 0 0 .1rem; }
-.row { display: flex; align-items: center; }
-.row a { min-width: 0; }
-.toggle {
-  flex: none; width: 1.7rem; height: 1.5rem; margin: 0 0 0 .1rem; padding: 0; border: 0; background: transparent;
-  color: var(--secondary); cursor: pointer; display: grid; place-items: center;
-}
-.toggle:hover { color: var(--primary); }
-.toggle:focus-visible { outline: 1px dashed var(--primary); outline-offset: 1px; }
-.toggle span {                      /* chevron: points right when closed, down when open */
-  width: .42em; height: .42em; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
-  transform: rotate(-45deg); transition: transform .12s;
-}
-.folder.open > .row .toggle span { transform: rotate(45deg) translate(-.06em, -.06em); }
-.children { padding-left: 1.1rem; margin: .1rem 0 .35rem; }
-.files { padding: 0 .5rem 0 1rem; margin: .1rem 0 .4rem;
-  max-height: min(13rem, 28vh); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--secondary) transparent; }   /* long lists scroll inside this box */
-.files li { margin: 0; line-height: 1.5; padding: .12rem 0; }
-.files a { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--secondary); }
-.files a:hover, .files a[aria-current] { color: var(--primary); }
-.folder:not(.open) > .children, .folder:not(.open) > .files { display: none; }
-html:not(.js) .folder > .children, html:not(.js) .folder > .files { display: block; }   /* no JavaScript: show everything */
-html:not(.js) .toggle { display: none; }
+.nav .tree > li { margin: 0 0 .1rem; }
 .nav a[aria-current] { text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
 
 .tagline { margin: 0 0 1rem; color: var(--secondary); }
@@ -154,10 +135,13 @@ html:not(.js) .toggle { display: none; }
 .list-intro { margin-bottom: 3rem; }
 .terms { list-style: none; margin: 0; padding: 0; }
 .terms .count { color: var(--secondary); margin-left: .75em; }
-.back { margin: 2.5rem 0 0; }
+.back { margin: 4rem 0 0; }
+.subs { margin: 0 0 2.5rem; display: flex; flex-wrap: wrap; gap: 0 1.5rem; }
+.subs a { color: var(--secondary); }
+.subs a:hover { color: var(--primary); }
 
 .entry { margin-bottom: 4.25em; }
-.entry-title { margin: 0 0 1.8em; font-size: inherit; font-weight: 400; }
+.entry-title { margin: 0 0 .35em; font-size: inherit; font-weight: 400; }
 .entry-title a, .entry-body a, .meta a { text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
 .entry-title a:hover, .entry-body a:hover, .meta a:hover { text-decoration: none; }
 .entry-body > :first-child { margin-top: 0; }
@@ -193,16 +177,39 @@ html:not(.js) .toggle { display: none; }
 
 iframe { display: block; width: 100%; border: 1px solid var(--primary); background: #fff; }
 
-audio { display: block; width: 100%; max-width: 30rem; margin: 0 0 1.5rem; }
+/* audio: slim player (play/pause, thin line, time). Without JS the browser's own controls show. */
+.player { display: flex; align-items: center; gap: 1rem; max-width: 30rem; margin: 0 0 1.5rem; color: var(--secondary); }
+.player audio { display: block; width: 100%; }
+.player.on audio { display: none; }
+.pp { flex: none; min-width: 3.4em; padding: 0; border: 0; background: transparent; font: inherit; color: var(--primary); text-align: left; cursor: pointer; }
+.pp:hover { text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
+.bar { position: relative; flex: 1; height: 1.4rem; cursor: pointer; }
+.bar::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--secondary); }
+.bar i { position: absolute; left: 0; top: 50%; height: 1px; width: 0; background: var(--primary); }
+.bar:focus-visible { outline: 1px dashed var(--primary); outline-offset: 2px; }
+.tm { flex: none; font-variant-numeric: tabular-nums; }
 
 .meta { margin-top: 1.1em; display: flex; flex-wrap: wrap; gap: 0 1rem; color: var(--secondary); }
 .meta a { color: var(--secondary); text-decoration: none; }
 .meta a:hover { color: var(--primary); }
 
-.back + .pager { margin-top: 1rem; }
-.pager { display: flex; flex-wrap: wrap; gap: .5rem 2rem; margin-top: 4rem; }
+.back + .pager { margin-top: 1.5rem; }
+.pager { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem 2rem; margin-top: 4rem; }   /* two fixed columns: "next" can never slide left */
 .pager a { text-decoration: none; }
-.pager .spacer { flex: 1; }
+.pager .next { text-align: right; }
+
+/* ---------- uniform post: title · expand/compact · body · meta ---------- */
+.xp { display: flex; align-items: center; gap: .45em; margin: 0 0 1.5em auto; padding: 0; border: 0; background: transparent; font: inherit; font-size: .9em; color: var(--secondary); cursor: pointer; }
+.xp:hover { color: var(--primary); }
+.xp:focus-visible { outline: 1px dashed var(--primary); outline-offset: 3px; }
+.chev { width: .36em; height: .36em; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translate(-.06em, -.06em); transition: transform .12s; }   /* down = compact */
+.post.x .chev { transform: rotate(135deg) translate(-.06em, -.06em); }                                                                                                                     /* left = expanded */
+html:not(.js) .xp { display: none; }
+html:not(.js) .post .entry-title { margin-bottom: 1.8em; }
+.post:not(.x) .clamp { max-height: 24rem; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
+.post:not(.x) .when-x, .post.x .when-c { display: none; }
+.post.x figure.fit a.zoom { width: 100%; }
+.post.x figure.fit img { width: 100%; max-width: 100%; max-height: none; }
 
 /* ---------- images: one capped, left-aligned box (3:2) everywhere ---------- */
 .entry-body > img { margin: 0 0 1.25em; }
@@ -230,9 +237,42 @@ dialog.lightbox::backdrop { background: rgba(0, 0, 0, .62); -webkit-backdrop-fil
 .grid a:hover img, .grid a:focus-visible img { filter: none; }
 .grid .noimg { width: 100%; aspect-ratio: 1; border: 1px solid var(--secondary); }
 
-.gallery { display: grid; gap: 2.5rem; margin: 0 0 1.5rem; }
-.gallery figure { margin: 0; }
-.gallery img { display: block; max-width: 100%; height: auto; }
+
+/* Browse page: search | tree */
+.modes { margin: 0 0 1.25rem; color: var(--secondary); display: flex; justify-content: center; gap: .6em; }
+.modes button { padding: 0; border: 0; background: transparent; font: inherit; color: var(--secondary); cursor: pointer; }
+.modes button[aria-pressed="true"] { color: var(--primary); }
+.modes button:hover { color: var(--primary); }
+html:not(.js) .modes { display: none; }
+.treeview { display: none; margin: 2rem 0 3rem; }
+.bp.tree-mode .treeview { display: block; }
+.bp.tree-mode .search, .bp.tree-mode .browse { display: none; }
+.treeview .tree, .treeview .sub { list-style: none; margin: 0; padding: 0; }
+.treeview .tree .sub { margin-left: 1rem; }                      /* no JS: the full nested list */
+.treeview li { margin: 0 0 .35rem; }
+.dcrumbs, .dup { margin: 0 0 1rem; color: var(--secondary); }
+.dcrumbs .sep { margin: 0 .5em; }
+.dcrumbs .cur { color: var(--primary); }
+.dup { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
+.dlink, .dfolder { padding: 0; border: 0; background: transparent; font: inherit; color: var(--secondary); cursor: pointer; text-align: left; }
+.dlink:hover, .dopen:hover { color: var(--primary); }
+.dopen { color: var(--secondary); }
+.dlist { list-style: none; margin: 0; padding: 0; }
+.dlist li { margin: 0 0 .5rem; line-height: 1.5; }
+.dfolder { color: var(--folder); }                       /* blue = folder (no arrow needed); files keep the text colour */
+.dfolder:hover { text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
+.dlist a { text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
+.dlist a:hover { text-decoration: none; }
+.dhead { display: flex; align-items: center; }
+.dtog { flex: none; width: 1.7rem; height: 1.5rem; margin-left: .1rem; padding: 0; border: 0; background: transparent; color: var(--secondary); cursor: pointer; display: grid; place-items: center; }
+.dtog:hover { color: var(--primary); }
+.dtog span { width: .4em; height: .4em; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translate(-.06em, -.06em); transition: transform .12s; }   /* down = closed */
+.dtog[aria-expanded="true"] span { transform: rotate(-135deg) translate(-.06em, -.06em); }                                                                                                                /* up = open */
+.dpeek { list-style: none; margin: .3rem 0 .6rem 1rem; padding: 0; }
+.dpeek li { margin: 0 0 .3rem; }
+.dpeek a { color: var(--secondary); text-decoration: none; }
+.dpeek a:hover { color: var(--primary); }
+.dtog:focus-visible, .dlink:focus-visible, .dfolder:focus-visible { outline: 1px dashed var(--primary); outline-offset: 2px; }
 
 /* ---------- top bar: theme toggle (one word: the mode you will switch to) ---------- */
 .topbar { position: fixed; top: var(--pad); right: var(--pad); z-index: 5; display: flex; align-items: baseline; gap: 1.6rem; }
@@ -318,11 +358,8 @@ html:not(.js) .tone-toggle { display: none; }
   html.menu-open .menu-close { display: block; position: fixed; z-index: 40; top: var(--pad); right: var(--pad); padding: .25rem 0 .25rem .75rem; border: 0; background: transparent; color: var(--primary); cursor: pointer; line-height: 0; }
   .menu-close svg { width: 1.6rem; height: .8rem; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; display: block; }
   .nav { margin-bottom: 1.25rem; }
-  .toggle { width: 2.2rem; height: 1.9rem; }               /* easier to tap */
   .tagline { display: none; }
   html.menu-open .tagline { display: block; }
-  .files { max-height: min(13rem, 38vh); }
-  html.menu-open .files { max-height: min(20rem, 50vh); }
   .main { padding: 1rem var(--pad) 0; }
   .entry { margin-bottom: 3em; }
   .grid { gap: 1.75rem 1rem; }

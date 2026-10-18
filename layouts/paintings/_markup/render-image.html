@@ -1,3 +1,0 @@
-{{- /* Every Markdown image in Paintings is fitted + click-to-enlarge. */ -}}
-{{- $src := .Destination | strings.TrimPrefix "./" -}}
-{{- partial "fitfig.html" (dict "res" (.PageInner.Resources.GetMatch $src) "src" .Destination "alt" .PlainText "caption" .Title) -}}

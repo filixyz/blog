@@ -1,5 +1,12 @@
 {{ define "main" }}
 {{ if or (eq .Kind "term") (eq .Kind "taxonomy") }}<h1 class="list-title">{{ if eq .Kind "term" }}tag: {{ end }}{{ lower .Title }}</h1>{{ else }}<h1 class="sr-only">{{ .Title }}</h1>{{ end }}
+{{- if and .IsSection (not .IsHome) }}
+  {{- $subs := slice }}
+  {{- range site.Menus.main }}{{ if and .Page (eq .Page $) .HasChildren }}{{ $subs = .Children }}{{ end }}{{ end }}
+  {{- if $subs }}
+<p class="subs">{{ range $subs }}<a href="{{ .URL }}">{{ .Name }}</a>{{ end }}</p>
+  {{- end }}
+{{- end }}
 {{ with .Content }}<div class="entry-body list-intro">{{ . }}</div>{{ end }}
 {{- if eq .Kind "taxonomy" }}
 <ul class="terms">

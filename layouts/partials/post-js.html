@@ -1,0 +1,50 @@
+{{- /* Per-post expand/compact toggle (state lives only in the page: refresh, back button, or leaving and returning all reset it)
+       and the slim audio player. */ -}}
+<script>
+(function () {
+  var posts = [].slice.call(document.querySelectorAll(".post"));
+  function set(p, on) {
+    var b = p.querySelector(".xp"); if (!b) return;
+    p.classList.toggle("x", on);
+    b.setAttribute("aria-expanded", on);
+    b.querySelector(".xp-t").textContent = on ? "compact" : "expand";
+  }
+  posts.forEach(function (p) {
+    var b = p.querySelector(".xp"); if (!b) return;
+    b.addEventListener("click", function () {
+      var live = p.querySelector("figure.fit img, .entry-body img") || p.getAttribute("data-text");
+      if (!live) return;                       /* nothing to expand: nothing happens, label stays */
+      set(p, !p.classList.contains("x"));
+    });
+  });
+  window.addEventListener("pageshow", function (e) { if (e.persisted) posts.forEach(function (p) { set(p, false); }); });
+
+  function t(s) { s = isFinite(s) ? Math.floor(s) : 0; return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+  var all = [];
+  [].slice.call(document.querySelectorAll(".player")).forEach(function (w) {
+    var a = w.querySelector("audio"); if (!a) return;
+    a.removeAttribute("controls"); w.classList.add("on"); all.push(a);
+    w.insertAdjacentHTML("afterbegin", '<button type="button" class="pp">play</button><span class="bar" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></span><span class="tm">0:00</span>');
+    var pp = w.querySelector(".pp"), bar = w.querySelector(".bar"), fill = bar.querySelector("i"), tm = w.querySelector(".tm");
+    function draw() {
+      var d = a.duration, f = d ? a.currentTime / d : 0;
+      fill.style.width = (f * 100) + "%"; bar.setAttribute("aria-valuenow", Math.round(f * 100));
+      tm.textContent = t(a.currentTime) + (d ? " / " + t(d) : "");
+    }
+    pp.addEventListener("click", function () {
+      if (a.paused) { all.forEach(function (o) { if (o !== a) o.pause(); }); a.play(); } else a.pause();
+    });
+    a.addEventListener("play", function () { pp.textContent = "pause"; });
+    a.addEventListener("pause", function () { pp.textContent = "play"; });
+    a.addEventListener("ended", function () { pp.textContent = "play"; a.currentTime = 0; draw(); });
+    ["timeupdate", "loadedmetadata", "durationchange"].forEach(function (n) { a.addEventListener(n, draw); });
+    bar.addEventListener("click", function (e) {
+      var r = bar.getBoundingClientRect(); if (a.duration) a.currentTime = a.duration * Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+    });
+    bar.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { a.currentTime += 5; e.preventDefault(); }
+      if (e.key === "ArrowLeft") { a.currentTime -= 5; e.preventDefault(); }
+    });
+  });
+})();
+</script>

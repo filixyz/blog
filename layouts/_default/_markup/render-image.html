@@ -1,3 +1,3 @@
-{{- /* Every Markdown image in Articles is fitted + click-to-enlarge. (Other sections are untouched.) */ -}}
+{{- /* Every Markdown image, in every section: fitted (3:2 box), click-to-enlarge. Expand makes it full column width. */ -}}
 {{- $src := .Destination | strings.TrimPrefix "./" -}}
 {{- partial "fitfig.html" (dict "res" (.PageInner.Resources.GetMatch $src) "src" .Destination "alt" .PlainText "caption" .Title) -}}

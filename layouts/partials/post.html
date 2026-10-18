@@ -1,0 +1,32 @@
+{{- /* One post, identical in the feed and on its own page (everything except the resume).
+       title · expand/compact toggle · body (images capped, left) · date and tags.
+       Call with: partial "post.html" (dict "p" . "page" true|false) */ -}}
+{{- $p := .p -}}{{ $page := .page | default false -}}
+{{- $limit := int (site.Params.feedWords | default 250) -}}
+{{- $text := "" -}}
+{{- if not $page }}{{ if $p.Truncated }}{{ $text = "more" }}{{ else if gt $p.WordCount $limit }}{{ $text = "clamp" }}{{ end }}{{ end -}}
+<article class="entry post entry--{{ $p.Type }}{{ if $p.Params.verse }} entry--verse{{ end }}"{{ with $text }} data-text="{{ . }}"{{ end }}>
+  {{- if $page }}
+  <h1 class="entry-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h1>
+  {{- else }}
+  <h2 class="entry-title"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></h2>
+  {{- end }}
+  <button type="button" class="xp" aria-expanded="false"><span class="xp-t">expand</span><i class="chev" aria-hidden="true"></i></button>
+  {{ partial "media.html" (dict "page" $p "cover" true) }}
+  {{- if eq $text "more" }}
+  <div class="entry-body when-c">{{ $p.Summary }}<p class="more"><a href="{{ $p.RelPermalink }}">continue &rarr;</a></p></div>
+  <div class="entry-body when-x">{{ $p.Content }}</div>
+  {{- else if eq $text "clamp" }}
+  <div class="entry-body clamp">{{ $p.Content }}</div>
+  <p class="more when-c"><a href="{{ $p.RelPermalink }}">continue &rarr;</a></p>
+  {{- else }}
+  <div class="entry-body">{{ $p.Content }}</div>
+  {{- end }}
+  <div class="meta">
+    <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "January 2, 2006" }}</time>
+    {{- with $p.Parent }}{{ if not .IsHome }}<a href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a>{{ end }}{{ end }}
+    {{- range $p.GetTerms "tags" }}
+    <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+    {{- end }}
+  </div>
+</article>

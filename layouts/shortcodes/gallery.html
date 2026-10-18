@@ -1,16 +1,11 @@
-{{- /* {{< gallery >}} — shows every image in the page bundle except cover*, in filename order.
-       Give an image a caption/alt in front matter:
+{{- /* {{< gallery >}} — every image in the page bundle except cover*, in filename order, as ordinary post images
+       (capped box; full column width when the post is expanded). Optional caption per image in front matter:
        resources:
          - src: "page-02.jpg"
-           title: "Page 2"                                                        */ -}}
-<div class="gallery">
+           params:
+             caption: "Page 2"                                                        */ -}}
 {{- range .Page.Resources.ByType "image" }}
   {{- if not (hasPrefix .Name "cover") }}
-  {{- $img := .Resize "1400x q85" }}
-  <figure>
-    <a href="{{ .RelPermalink }}"><img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ .Title }}" loading="lazy"></a>
-    {{- if .Params.caption }}<figcaption>{{ .Params.caption }}</figcaption>{{ end }}
-  </figure>
+{{ partial "fitfig.html" (dict "res" . "alt" (.Title) "caption" (.Params.caption)) }}
   {{- end }}
 {{- end }}
-</div>
