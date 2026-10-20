@@ -2,7 +2,6 @@
 title: "Dream Log, Sometime middle of this year, 2026"
 date: 2026-10-20T21:35:33+01:00
 tags: []
-draft: true
 ---
 
 "A mouse was placed in a glass cubic enclosing with a carved in space large enough to fit only the contours of it's body and infront of him was a small grey wall, This was all the mouse was allowed to see. The mouse was an actor in an experiment it had no hands in the making, it's participation will also be of no debate, at least not with the mouse itself.
