@@ -379,3 +379,6 @@ html[data-font="wikipedia"] .entry-body h1, html[data-font="wikipedia"] .entry-b
 
 /* params.font = "mono": IBM Plex Mono for everything */
 html[data-font="mono"] body { font-family: var(--code); }
+
+.external-fonts a {
+}

@@ -11,6 +11,8 @@
           <li><a href="{{ .URL }}"{{ if and .Page (eq $current .Page) }} aria-current="page"{{ else if $inside }} aria-current="true"{{ end }}>{{ .Name }}</a></li>
 {{- end }}
         </ul>
-      </nav>
       {{ with site.Params.tagline }}<p class="tagline">{{ . }}</p>{{ end }}
-      {{ with site.Params.external }}<p><a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ .name }} &nearr;</a></p>{{ end }}
+      <ul class="tree">
+    {{ range site.Params.external }}<li><a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ .name }} <!--&nearr;--></a></li>{{ end }}
+      </ul>
+      </nav>

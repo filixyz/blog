@@ -18,7 +18,7 @@ summaryLength = 100000
 [params]
   # Text colour. false = plain (grey on near-black / black on white).
   # true = "purple" mode (the blue/lavender lettering) for everyone who has not clicked the circle at the foot of the page.
-  purple = false
+  # purple = false
 
   # true = code blocks are coloured by language (GitHub style). false = plain code, same colour as the text.
   # Applies to everyone on the next deploy; there is no visitor-side switch.
@@ -36,9 +36,15 @@ summaryLength = 100000
   # or "typewriter" (American Typewriter on Macs/iPhones, bundled Arvo slab elsewhere).
   font = "inter"
   description = "Personal Blog"
-#  tagline = ""
+  # tagline = ""
   # Optional outside link under the tagline. Delete the block to hide it.
-[params.external]
+
+
+[[params.external]]
+  name = "GitHub"
+  url  = "https://github.com/filixyz"
+
+[[params.external]]
   name = "LinkedIn"
   url  = "https://www.linkedin.com/in/felix-okoronkwo"
 
