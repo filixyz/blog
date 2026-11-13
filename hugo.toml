@@ -2,9 +2,9 @@
 # Site config. Change baseURL to your real address once deployed
 # (Cloudflare Pages gives you https://<project>.pages.dev/).
 # ------------------------------------------------------------------
-baseURL = "https://example.pages.dev/"
+baseURL = "https://felixcorpus.pages.dev/"
 locale = "en"
-title = "felix corpus"        # shown top-left and in the footer — change freely
+title = "Joseph Felix Ikechukwu"        # shown top-left and in the footer — change freely
 enableRobotsTXT = true
 # Only auto-summarise when you place <!--more--> yourself (see README).
 summaryLength = 100000
@@ -36,11 +36,11 @@ summaryLength = 100000
   # or "typewriter" (American Typewriter on Macs/iPhones, bundled Arvo slab elsewhere).
   font = "inter"
   description = "Personal Blog"
-  tagline = "Ikechukwu Felix O. Web Archive"
+#  tagline = ""
   # Optional outside link under the tagline. Delete the block to hide it.
-  # [params.external]
-  #   name = "Bandcamp"
-  #   url  = "https://example.com"
+[params.external]
+  name = "LinkedIn"
+  url  = "https://www.linkedin.com/in/felix-okoronkwo"
 
 [markup.goldmark.parser]
   wrapStandAloneImageWithinParagraph = false   # lets image hooks output <figure> without a stray <p>
