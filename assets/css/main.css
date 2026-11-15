@@ -31,8 +31,8 @@
 
 /* Sizes and spacing are the same in every theme and colour mode: only colours live in the blocks below. */
 :root {
-  --size: 0.86rem;
-  --pad: 1.75rem;
+  --size: 0.65rem;
+  --pad: 3.0rem;
   --box-w: 34rem;      /* image box: 3:2, left aligned */
   --box-h: 22.5rem;
   --code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -54,11 +54,6 @@
   --folder: #1d56b8;
   color-scheme: light;
 }
-/* ---- purple mode: the circle at the foot of the page, or `purple = true` in hugo.toml ----
-   Change the two lines below to change the purple. */
-:root[data-purple="on"][data-theme="dark"]  { --primary: #7c8cff; --secondary: #4b57b8; }
-:root[data-purple="on"][data-theme="light"] { --base: #fbfbfb; --primary: #0000f5; --secondary: rgba(0, 0, 245, 0.45); }
-
 *, *::before, *::after { box-sizing: border-box; }
 
 html { background: var(--base); -webkit-text-size-adjust: 100%; }
