@@ -1,7 +1,7 @@
 {{ define "main" }}
 {{ partial "post.html" (dict "p" . "page" true) }}
 {{- with .Parent }}{{ if not .IsHome }}
-<p class="back"><a href="{{ .RelPermalink }}">&larr; back to {{ lower .LinkTitle }}</a></p>
+<p class="back"><a href="{{ .RelPermalink }}">&larr; Back to {{ .LinkTitle }}</a></p>
 {{- end }}{{ end }}
 {{- $sibs := .Parent.RegularPages }}
 <nav class="pager" aria-label="More in {{ .Parent.LinkTitle }}">

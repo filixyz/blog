@@ -3,21 +3,20 @@
        (they jump to that month) and, with JavaScript, filter the list. */ -}}
 {{- $pages := (where site.RegularPages "Type" "ne" "page").ByDate.Reverse -}}
 {{- $groups := $pages.GroupByDate "2006-01" -}}
-<h1 class="list-title tight">browse</h1>
-<p class="back"><a href="{{ "/" | relURL }}">&larr; back to feed</a></p>
+<h1 class="list-title tight">{{ .Title }}</h1>
 <div class="bp">
-<p class="modes" role="group" aria-label="Browse mode"><button type="button" data-m="search" aria-pressed="true">search</button><span aria-hidden="true">|</span><button type="button" data-m="tree" aria-pressed="false">tree</button></p>
-<input class="search" type="search" id="q" placeholder="search this site…" aria-label="Search this site" autocomplete="off" spellcheck="false">
+<p class="modes" role="group" aria-label="Browse mode"><button type="button" data-m="search" aria-pressed="true">Search</button><span aria-hidden="true">|</span><button type="button" data-m="tree" aria-pressed="false">Tree</button></p>
+<input class="search" type="search" id="q" placeholder="Search this site…" aria-label="Search this site" autocomplete="off" spellcheck="false">
 <div class="browse">
   <nav class="dates" aria-label="Browse by date">
-    <h2>browse by date</h2>
-    <button type="button" class="dd" aria-haspopup="listbox" aria-expanded="false"><span class="dd-label">all dates</span></button>
+    <h2>Browse by date</h2>
+    <button type="button" class="dd" aria-haspopup="listbox" aria-expanded="false"><span class="dd-label">All dates</span></button>
     <ul>
-      <li class="alldates sel"><a href="{{ .RelPermalink }}">all dates</a></li>
+      <li class="alldates sel"><a href="{{ .RelPermalink }}">All dates</a></li>
 {{- range $groups }}
       <li data-ym="{{ .Key }}"><a href="#{{ .Key }}">{{ (index .Pages 0).Date.Format "January 2006" }}</a> <span class="count">({{ len .Pages }})</span></li>
 {{- end }}
-      <li class="all" hidden><a href="{{ .RelPermalink }}">back to all dates</a></li>
+      <li class="all" hidden><a href="{{ .RelPermalink }}">Back to all dates</a></li>
     </ul>
   </nav>
   <div>
@@ -54,9 +53,9 @@
   function render() {
     var node = path.length ? path[path.length - 1] : null, list = node ? node.querySelector(":scope > ul.sub") : src;
     view.innerHTML = "";
-    var crumbs = el("p", "dcrumbs"), root = el("button", "dlink", "tree");
+    var crumbs = el("p", "dcrumbs"), root = el("button", "dlink", "Tree");
     root.type = "button"; root.onclick = function () { path = []; render(); };
-    if (!path.length) { root = el("span", "cur", "tree"); }
+    if (!path.length) { root = el("span", "cur", "Tree"); }
     crumbs.appendChild(root);
     path.forEach(function (f, i) {
       crumbs.appendChild(el("span", "sep", "/"));
@@ -66,9 +65,9 @@
     });
     view.appendChild(crumbs);
     if (node) {
-      var up = el("p", "dup"), ub = el("button", "dlink", "\u2190 parent"); ub.type = "button";
+      var up = el("p", "dup"), ub = el("button", "dlink", "\u2190 Parent"); ub.type = "button";
       ub.onclick = function () { path.pop(); render(); }; up.appendChild(ub);
-      var open = el("a", "dopen", "open page"); open.href = node.querySelector(":scope > a").href; up.appendChild(open);
+      var open = el("a", "dopen", "Open page"); open.href = node.querySelector(":scope > a").href; up.appendChild(open);
       view.appendChild(up);
     }
     var ul = el("ul", "dlist");

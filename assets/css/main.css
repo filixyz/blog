@@ -35,6 +35,11 @@
   --pad: 3.0rem;
   --box-w: 34rem;      /* image box: 3:2, left aligned */
   --box-h: 22.5rem;
+  /* sidebar list (pages, links, search, light/dark): tune size and spacing here */
+  --nav-size: var(--size); /* same size as the rest of the site's text */
+  --nav-lh: 1.25;          /* row height: tight, like lightindustry.org */
+  --nav-gap: 0rem;         /* extra space between two entries */
+  --nav-group: 0rem;       /* extra space between the groups (pages / links / search) */
   --code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 /* ---- plain colours (default) ---- */
@@ -104,9 +109,10 @@ a:focus-visible, audio:focus-visible, summary:focus-visible { outline: 1px dashe
 picture { display: contents; }
 
 /* sidebar: plain section links. (The folder tree with chevrons lives on the Browse page.) */
-.nav { margin-bottom: 2rem; }
+.nav { margin-bottom: 2rem; font-size: var(--nav-size); line-height: var(--nav-lh); }
 .tree, .children, .files { list-style: none; margin: 0; padding: 0; }
-.nav .tree > li { margin: 0 0 .1rem; }
+.nav .tree > li { margin: 0 0 var(--nav-gap); }
+.nav .tree + .tree, .nav .tagline + .tree { margin-top: var(--nav-group); }
 .nav a[aria-current] { text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
 
 .tagline { margin: 0 0 1rem; color: var(--secondary); }
@@ -193,18 +199,10 @@ iframe { display: block; width: 100%; border: 1px solid var(--primary); backgrou
 .pager a { text-decoration: none; }
 .pager .next { text-align: right; }
 
-/* ---------- uniform post: title · expand/compact · body · meta ---------- */
-.xp { display: flex; align-items: center; gap: .45em; margin: 0 0 1.5em auto; padding: 0; border: 0; background: transparent; font: inherit; font-size: .9em; color: var(--secondary); cursor: pointer; }
-.xp:hover { color: var(--primary); }
-.xp:focus-visible { outline: 1px dashed var(--primary); outline-offset: 3px; }
-.chev { width: .36em; height: .36em; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translate(-.06em, -.06em); transition: transform .12s; }   /* down = compact */
-.post.x .chev { transform: rotate(135deg) translate(-.06em, -.06em); }                                                                                                                     /* left = expanded */
-html:not(.js) .xp { display: none; }
-html:not(.js) .post .entry-title { margin-bottom: 1.8em; }
-.post:not(.x) .clamp { max-height: 24rem; overflow: hidden; -webkit-mask-image: linear-gradient(#000 72%, transparent); mask-image: linear-gradient(#000 72%, transparent); }
-.post:not(.x) .when-x, .post.x .when-c { display: none; }
-.post.x figure.fit a.zoom { width: 100%; }
-.post.x figure.fit img { width: 100%; max-width: 100%; max-height: none; }
+/* ---------- uniform post: title · body · meta. Always shown whole; images run the full column width, stacked ---------- */
+.post .entry-title { margin-bottom: 1.1em; }
+.post figure.fit a.zoom { width: 100%; }
+.post figure.fit img { width: 100%; max-width: 100%; max-height: none; }
 
 /* ---------- images: one capped, left-aligned box (3:2) everywhere ---------- */
 .entry-body > img { margin: 0 0 1.25em; }
@@ -269,18 +267,9 @@ html:not(.js) .modes { display: none; }
 .dpeek a:hover { color: var(--primary); }
 .dtog:focus-visible, .dlink:focus-visible, .dfolder:focus-visible { outline: 1px dashed var(--primary); outline-offset: 2px; }
 
-/* ---------- top bar: theme toggle (one word: the mode you will switch to) ---------- */
-.topbar { position: fixed; top: var(--pad); right: var(--pad); z-index: 5; display: flex; align-items: baseline; gap: 1.6rem; }
-.topbar .site-title, .menu-btn, .menu-close { display: none; }
+/* ---------- top bar: phones only (the site name). On desktop the top right is left empty. ---------- */
+.topbar { display: none; }
 .feed { color: var(--secondary); }   /* the "(feed)" tag: dim, like the other secondary text */
-.theme-toggle, .menu-btn, .browse-link {
-  padding: 0; border: 0; background: transparent; cursor: pointer;
-  font: inherit; line-height: inherit; color: var(--secondary);
-}
-.theme-toggle:hover, .menu-btn:hover, .browse-link:hover { color: var(--primary); }
-.browse-link[aria-current] { color: var(--primary); text-decoration: underline; text-underline-offset: .22em; text-decoration-thickness: 1px; }
-.theme-toggle:focus-visible, .menu-btn:focus-visible, .browse-link:focus-visible, .menu-close:focus-visible { outline: 1px dashed var(--primary); outline-offset: 3px; }
-html:not(.js) .theme-toggle { display: none; }
 
 /* ---------- browse page: search, browse by date, results ---------- */
 [hidden] { display: none !important; }
@@ -318,12 +307,9 @@ html:not(.js) .tone-toggle { display: none; }
 /* ---------- small screens ---------- */
 @media (max-width: 760px) {
   :root { --size: 0.78rem; --pad: 7.9vw; }
-  /* header: name left; menu, then theme toggle, on the right */
-  .topbar { position: static; display: grid; grid-template-columns: 1fr auto auto auto; column-gap: 1.15rem; align-items: baseline; padding: var(--pad) var(--pad) 0; }
-  .topbar .site-title { display: block; margin: 0; grid-column: 1; }
-  html.js .menu-btn { display: block; grid-column: 2; grid-row: 1; }
-  .topbar .browse-link { grid-column: 3; grid-row: 1; }
-  .topbar .theme-toggle { grid-column: 4; grid-row: 1; }
+  /* header: just the site name; the banner and then one vertical list follow */
+  .topbar { display: block; padding: var(--pad) var(--pad) 0; }
+  .topbar .site-title { display: block; margin: 0; }
   .hero-d { display: none; }
   .browse { grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1.5rem; }
   .dates ul { max-height: 11rem; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--secondary) transparent; }
@@ -342,19 +328,10 @@ html:not(.js) .tone-toggle { display: none; }
   html.js .dates h2 { margin-bottom: .5rem; }
   .hero-m { display: block; width: 100%; margin: 1rem 0 0; }       /* edge to edge, ignores the side padding */
   .layout { display: block; }
-  /* no JS: the tree simply sits under the header */
-  .sidebar { position: static; max-height: none; overflow: visible; padding: 1.5rem var(--pad) 0; }
+  .sidebar { position: static; max-height: none; overflow: visible; padding: 1.1rem var(--pad) 0; }
   .sidebar .site-title { display: none; }
-  /* with JS: the tree lives in a full-screen menu */
-  html.js .sidebar { display: none; }
-  html.menu-open { overflow: hidden; }
-  html.menu-open .sidebar { display: block; position: fixed; inset: 0; z-index: 30; background: var(--base); overflow-y: auto; padding: var(--pad) var(--pad) 3rem; }
-  html.menu-open .sidebar .site-title { display: inline-block; margin-bottom: 1.75rem; }
-  html.menu-open .menu-close { display: block; position: fixed; z-index: 40; top: var(--pad); right: var(--pad); padding: .25rem 0 .25rem .75rem; border: 0; background: transparent; color: var(--primary); cursor: pointer; line-height: 0; }
-  .menu-close svg { width: 1.6rem; height: .8rem; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; display: block; }
   .nav { margin-bottom: 1.25rem; }
   .tagline { display: none; }
-  html.menu-open .tagline { display: block; }
   .main { padding: 1rem var(--pad) 0; }
   .entry { margin-bottom: 3em; }
   .grid { gap: 1.75rem 1rem; }

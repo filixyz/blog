@@ -1,5 +1,5 @@
 ---
-title: "sample lyrics"
+title: "Sample lyrics"
 date: 2026-10-12
 tags: ["sample"]
 ---

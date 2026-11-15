@@ -1,5 +1,5 @@
 ---
-title: "Untitiled 0"
+title: "Untitled 0"
 date: 2026-10-20T20:32:02+01:00
 tags: []
 ---

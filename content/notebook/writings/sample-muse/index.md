@@ -1,5 +1,5 @@
 ---
-title: "sample muse"
+title: "Sample muse"
 date: 2026-10-11
 tags: ["sample"]
 ---

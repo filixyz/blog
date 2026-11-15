@@ -1,5 +1,5 @@
 ---
-title: "sample article: how a handshake works"
+title: "Sample article: how a handshake works"
 date: 2026-10-13
 draft: false
 tags: ["sample", "networking"]

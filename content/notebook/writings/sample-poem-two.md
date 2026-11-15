@@ -1,5 +1,5 @@
 ---
-title: "sample poem two"
+title: "Sample poem two"
 date: 2026-10-10
 tags: ["sample"]
 ---

@@ -1,5 +1,6 @@
+{{- $theme := cond (eq site.Params.theme "dark") "dark" "light" -}}
 <!DOCTYPE html>
-<html data-font="{{ site.Params.font | default "inter" }}" data-syntax="{{ if or (not (isset site.Params "syntax")) site.Params.syntax }}on{{ else }}off{{ end }}" lang="{{ site.Language.Locale | default "en" }}" data-theme="dark" data-purple="{{ if site.Params.purple }}on{{ else }}off{{ end }}" data-purple-default="{{ if site.Params.purple }}on{{ else }}off{{ end }}">
+<html data-font="{{ site.Params.font | default "inter" }}" data-syntax="{{ if or (not (isset site.Params "syntax")) site.Params.syntax }}on{{ else }}off{{ end }}" lang="{{ site.Language.Locale | default "en" }}" data-theme="{{ $theme }}" data-purple="{{ if site.Params.purple }}on{{ else }}off{{ end }}" data-purple-default="{{ if site.Params.purple }}on{{ else }}off{{ end }}">
 <head>
 {{ partial "head.html" . }}
 </head>

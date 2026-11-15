@@ -1,12 +1,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-{{- /* Runs before the stylesheet so the saved theme is applied with no flash. Default is dark. */}}
-<script>(function(){var d=document.documentElement;try{var t=localStorage.getItem("theme");d.setAttribute("data-theme",t==="light"?"light":"dark");
+{{- /* Colour mode is fixed by params.theme in hugo.toml (light unless set to "dark"); visitors have no switch. */}}
+<script>(function(){var d=document.documentElement;try{
 /* purple mode: the visitor's click wins, unless the site default (hugo.toml: purple) was changed after that click */
-var def=d.getAttribute("data-purple-default"),p=(localStorage.getItem("purple")||"").split("|");if(p[1]===def&&(p[0]==="on"||p[0]==="off"))d.setAttribute("data-purple",p[0])}catch(e){}d.classList.add("js")})()</script>
+var pd=d.getAttribute("data-purple-default"),p=(localStorage.getItem("purple")||"").split("|");if(p[1]===pd&&(p[0]==="on"||p[0]==="off"))d.setAttribute("data-purple",p[0])}catch(e){}d.classList.add("js")})()</script>
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
 <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="{{ if eq site.Params.theme "dark" }}#000000{{ else }}#ffffff{{ end }}">
 <link rel="canonical" href="{{ .Permalink }}">
 <link rel="icon" href="{{ "favicon.svg" | relURL }}" type="image/svg+xml">
 {{ with .OutputFormats.Get "RSS" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ site.Title }}">{{ end }}

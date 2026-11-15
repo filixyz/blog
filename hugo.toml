@@ -24,13 +24,12 @@ summaryLength = 100000
   # Applies to everyone on the next deploy; there is no visitor-side switch.
   syntax = true
 
-  # Feed only: a post longer than this many words is cut short with "continue →" while compact; expand shows it whole.
-  # (A <!--more--> you place yourself always wins.) Its own page always shows the full text.
-  feedWords = 250
-
   # Banner image: a file in assets/, ideally 1600x400 (4:1). Sits under the site name on desktop, under the top bar on phones,
   # running to the screen edge (left on desktop, both sides on phones). Set to "" to hide it.
   header = "header.png"
+
+  # Colour mode of the whole site: "light" or "dark". Visitors have no switch; change it here only.
+  theme = "light"
 
   # Text typeface: "inter" (default), "wikipedia" (system sans body + serif titles), "mono" (IBM Plex Mono),
   # or "typewriter" (American Typewriter on Macs/iPhones, bundled Arvo slab elsewhere).

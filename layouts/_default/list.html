@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{ if or (eq .Kind "term") (eq .Kind "taxonomy") }}<h1 class="list-title">{{ if eq .Kind "term" }}tag: {{ end }}{{ lower .Title }}</h1>{{ else }}<h1 class="sr-only">{{ .Title }}</h1>{{ end }}
+{{ if or (eq .Kind "term") (eq .Kind "taxonomy") }}<h1 class="list-title">{{ if eq .Kind "term" }}Tag: {{ end }}{{ .Title }}</h1>{{ else }}<h1 class="sr-only">{{ .Title }}</h1>{{ end }}
 {{- if and .IsSection (not .IsHome) }}
   {{- $subs := slice }}
   {{- range site.Menus.main }}{{ if and .Page (eq .Page $) .HasChildren }}{{ $subs = .Children }}{{ end }}{{ end }}
@@ -11,7 +11,7 @@
 {{- if eq .Kind "taxonomy" }}
 <ul class="terms">
   {{- range .Pages }}
-  <li><a href="{{ .RelPermalink }}">{{ lower .LinkTitle }}</a> <span class="count">{{ len .Pages }}</span></li>
+  <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a> <span class="count">{{ len .Pages }}</span></li>
   {{- end }}
 </ul>
 {{- else }}
@@ -30,6 +30,6 @@
   {{- end }}
 {{- end }}
 {{- with .Parent }}{{ if and (not .IsHome) (not $.IsHome) }}
-<p class="back"><a href="{{ .RelPermalink }}">&larr; back to {{ lower .LinkTitle }}</a></p>
+<p class="back"><a href="{{ .RelPermalink }}">&larr; Back to {{ .LinkTitle }}</a></p>
 {{- end }}{{ end }}
 {{ end }}

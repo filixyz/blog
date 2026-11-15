@@ -1,6 +1,6 @@
 # Personal site (Hugo → Cloudflare Pages)
 
-Dark by default (`light/dark` text top right), Inter type, and an optional purple text colour (small circle at the foot of every page). Layout follows the WordPress
+Light only (no visitor switch; the mode is `theme` in `hugo.toml`), Inter type, and an optional purple text colour (small circle at the foot of every page). Layout follows the WordPress
 **Indice** theme: sticky index on the left, one text column on the right.
 Everything you write is a Markdown file in `content/`.
 
@@ -19,7 +19,7 @@ content/
 
 Click the site name for the chronological feed of everything except the resume.
 
-**The sidebar is plain links** (`hugo.toml`, `[[menus.main]]`): Resume, Projects, Notebook, Collection. The section you are in, or the
+**The sidebar is one plain list** (`hugo.toml`, `[[menus.main]]` and `[[params.external]]`): Resume, Projects, Notebook, Collection; your outside links; Search this site. On phones the same list sits under the name and banner. Text size and spacing: `--nav-gap`, `--nav-group` (size follows the site text) at the top of `assets/css/main.css`. The section you are in, or the
 one that contains the page you are on, is underlined. There is no folder expansion any more, on desktop or phones. Notebook and Collection
 pages show a small row of their subsections (documents, writings / paintings, songs, juvenilia) above the posts. The whole nested tree
 (every section, subsection and entry) lives on the Browse page under `tree`.
@@ -50,12 +50,9 @@ An entry dated in the future stays hidden until that date, so use today's date o
 Delete the `sample-*` files and folders once you have your own, and edit `resume.md` (a PDF can go in `static/`).
 
 - **Writings:** one flat section, no sub-sections. Say what a piece is (poem, lyrics, muse…) in its title or add tags. Every line break you type is kept, and a blank line starts a new stanza. For a prose piece add `verse: false` to its front matter. To show an image in a piece, put `{{< fit src="pic.jpg" caption="…" >}}` where you want it (the entry must be a folder with `index.md` and the image).
-- **Every post looks the same** (feed and its own page; only the resume differs): title, a small `expand` toggle under it on the right, the body, then date and tags. Images anywhere in a post (cover, Markdown images, `{{< gallery >}}`) sit left-aligned, whole, in one capped 3:2 box (`--box-w` / `--box-h` at the top of `assets/css/main.css`) and open in a pop-up when clicked. No shortcode is needed any more.
-- **Expand / compact:** `expand` (chevron down) makes that post's images fill the width of the text column and stack downwards, for reading comics; the label becomes `compact` (chevron left). Each post has its own toggle. Nothing is remembered: refresh, the back button, or leaving and coming back all return to compact. If a post has no images and no cut-off text, the toggle does nothing and the label does not change. Without JavaScript the toggle is hidden.
-- **Long posts in the feed:** a post over `feedWords` words (`hugo.toml`, default 250) is cut short with a fade and `continue →` (to its own page) while compact; `expand` shows it whole in place. A post's own page always shows the full text; there `expand` only affects images. A `<!--more-->` you place yourself wins over the word limit.
+- **Every post looks the same** (feed and its own page; only the resume differs): title, the whole body, then date and tags. Images anywhere in a post (cover, Markdown images, `{{< gallery >}}`) run the full width of the text column, stacked, and open in a pop-up when clicked. There is no expand/compact toggle and no cut-off in the feed.
 - **Nesting:** any folder with an `_index.md` (give it a `title:`) becomes a section. Entries end with a "← back to …" link, and the sidebar and breadcrumbs show where you are. To make a new top-level group, add its folder and `[[menus.main]]` entries (with `parent = "…"` for children) in `hugo.toml`. Give a section's `_index.md` `cascade: type: <name>` so its entries share a type.
-- **Light / dark:** the `light/dark` text at the top right switches modes and remembers your choice. The site starts dark. Colours live at the top of `assets/css/main.css`.
-- **Short front-page preview:** put `<!--more-->` on its own line in a long entry; the feed and section lists stop there and show "continue →" while compact (expand shows everything). Without it, only posts over `feedWords` are cut.
+- **Light / dark:** there is no switch for visitors. The whole site uses `theme = "light"` in `hugo.toml`; set it to `"dark"` to flip it. Colours live at the top of `assets/css/main.css`.
 - **Comics / extra images:** keep `{{< gallery >}}` in the text. It shows every image in that folder except `cover.*`, in filename order, as normal post images (capped; full width when expanded). Add `hide_cover: true` to the front matter to hide
   the cover on the entry's own page.
 - **Audio anywhere:** `{{< audio src="file.mp3" >}}`, or `audio: "https://…"` in the front matter of a song. The player is a slim custom one (`play`/`pause`, a thin line you can click or use arrow keys on, time); without JavaScript the browser's own controls appear. Its look is the `.player` rules in `main.css`, its script is in `partials/post-js.html`.

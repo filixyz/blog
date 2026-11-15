@@ -1,7 +1,7 @@
-{{- /* Plain top-level links. The section you are in (or the one that contains the page you are on) is underlined.
-       The whole nested tree lives on the Browse page ("tree"). */ -}}
+{{- /* One plain vertical list, desktop sidebar and phones alike:
+       pages, then outside links, then Search this site.
+       The section you are in (or the one that contains the page you are on) is underlined. */ -}}
 {{- $current := . -}}
-      <button type="button" class="menu-close" aria-label="Close menu"><svg viewBox="0 0 24 12" aria-hidden="true"><path d="M23 6H2M7 1L2 6l5 5"/></svg></button>
       {{ partial "site-title.html" . }}
       {{ partial "header-image.html" (dict "cls" "hero-d") }}
       <nav class="nav" id="content-nav" aria-label="Main">
@@ -12,7 +12,12 @@
 {{- end }}
         </ul>
       {{ with site.Params.tagline }}<p class="tagline">{{ . }}</p>{{ end }}
-      <ul class="tree">
-    {{ range site.Params.external }}<li><a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ .name }} <!--&nearr;--></a></li>{{ end }}
-      </ul>
+{{- with site.Params.external }}
+        <ul class="tree">
+    {{ range . }}<li><a href="{{ .url }}" target="_blank" rel="noreferrer noopener">{{ .name }}</a></li>{{ end }}
+        </ul>
+{{- end }}
+        <ul class="tree">
+          <li><a href="{{ "browse/" | relURL }}"{{ if eq .Section "browse" }} aria-current="page"{{ end }}>Search this site</a></li>
+        </ul>
       </nav>
